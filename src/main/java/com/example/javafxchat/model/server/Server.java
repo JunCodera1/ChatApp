@@ -1,5 +1,7 @@
 package com.example.javafxchat.model.server;
 
+import com.example.javafxchat.model.message.Message;
+import com.example.javafxchat.model.message.MessageType;
 import com.example.javafxchat.model.message.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +51,20 @@ public class Server {
                 os = socket.getOutputStream();
                 output = new ObjectOutputStream(os);
 
+                Message firstMessage = (Message) input.readObject();
+
             }
+        }
+        private Message changeStatus(Message inputmsg) throws IOException{
+            logger.debug(inputmsg.getName() + " has changed status to " + inputmsg.getStatus());
+            Message msg = new Message();
+            msg.setName(user.getName());
+            msg.setType(MessageType.STATUS);
+            msg.setMsg("");
+            User userObj = names.get(name);
+            userObj.setStatus(inputmsg.getStatus());
+            write(msg);
+            return msg;
         }
     }
 
