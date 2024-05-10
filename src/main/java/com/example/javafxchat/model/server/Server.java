@@ -49,7 +49,6 @@ public class Server {
                 os = socket.getOutputStream();
                 output = new ObjectOutputStream(os);
 
-
             }
         }
     }
