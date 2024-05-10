@@ -108,6 +108,29 @@ public class Server {
             logger.debug("removeFromList() method Exit");
             return msg;
         }
+        /*
+         * For displaying that a user has joined the server
+         */
+        private Message addToList() throws IOException{
+            Message msg = new Message();
+            msg.setMsg("Welcome, You have now joined the server! Enjoy chatting!");
+            msg.setType(MessageType.CONNECTED);
+            msg.setName("SERVER");
+            write(msg);
+            return msg;
+        }
+        /*
+         * Creates and sends a Message type to the listeners.
+         */
+        private void write(Message msg) throws IOException{
+            for(ObjectOutputStream writer : writers){
+                msg.setUserList(names);
+                msg.setUsers(users);
+                msg.setOnlineCount(names.size());
+                writer.writeObject(msg);
+                writer.reset();
+            }
+        }
     }
 
 
