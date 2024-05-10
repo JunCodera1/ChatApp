@@ -64,6 +64,7 @@ public class Server {
                 writers.add(output);
                 sendNotification(firstMessage);
                 addToList();
+
                 while(socket.isConnected()){
                     Message inputmsg = (Message) input.readObject();
                     if(inputmsg != null){
@@ -96,6 +97,7 @@ public class Server {
                 logger.error("Exception is run() method for user: " + name, e);
             }
         }
+
         private Message changeStatus(Message inputmsg) throws IOException{
             logger.debug(inputmsg.getName() + " has changed status to " + inputmsg.getStatus());
             Message msg = new Message();
@@ -126,6 +128,7 @@ public class Server {
                 throw new DuplicateUsernameException(firstMessage.getName() + " is already connected");
             }
         }
+
         private Message sendNotification(Message firstMessage) throws IOException{
             Message msg = new Message();
             msg.setMsg("has joined the chat.");
