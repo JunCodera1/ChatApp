@@ -1,4 +1,7 @@
 package com.example.javafxchat.message;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
+
 }

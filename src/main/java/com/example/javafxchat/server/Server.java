@@ -43,6 +43,14 @@ public class Server {
         }
         public void run(){
             logger.info("Attempting to connect a user...");
+            try{
+                is = socket.getInputStream();
+                input = new ObjectInputStream(is);
+                os = socket.getOutputStream();
+                output = new ObjectOutputStream(os);
+
+
+            }
         }
     }
 
