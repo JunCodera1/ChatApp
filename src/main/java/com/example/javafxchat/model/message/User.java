@@ -1,4 +1,4 @@
-package com.example.javafxchat.message;
+package com.example.javafxchat.model.message;
 
 import java.io.Serializable;
 

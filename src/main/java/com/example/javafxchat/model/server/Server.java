@@ -1,6 +1,6 @@
-package com.example.javafxchat.server;
+package com.example.javafxchat.model.server;
 
-import com.example.javafxchat.message.User;
+import com.example.javafxchat.model.message.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
