@@ -66,6 +66,8 @@ public class Server {
             write(msg);
             return msg;
         }
+
+        private synchronized void checkDuplicateUsername(Message firstMessage) throws
     }
 
 
