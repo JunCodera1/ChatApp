@@ -1,0 +1,50 @@
+package com.example.javafxchat.server;
+
+import com.example.javafxchat.message.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+
+public class Server {
+    /* Setting up variables */
+    private static final int PORT = 5000;
+    private static final HashMap<String, User> names = new HashMap<>();
+    private static HashSet<ObjectOutputStream> writers = new HashSet<>();
+    private static ArrayList<User> users = new ArrayList<>();
+    static Logger logger = LoggerFactory.getLogger(Server.class);
+
+    public static void main(String[] args) {
+        logger.info("The chat server is running.");
+        ServerSocket listener = new ServerSocket(PORT);
+        try{
+            while (true){
+                new Handler(listener.accept()).start;
+            }
+        }
+    }
+
+    private static class Handler extends Thread{
+        private String name;
+        private Socket socket;
+        private Logger logger = LoggerFactory.getLogger(Handler.class);
+        private User user;
+        private ObjectInputStream input;
+        private OutputStream os;
+        private ObjectOutputStream output;
+        private InputStream is;
+        public Handler(Socket socket) throws IOException{
+            this.socket = socket;
+        }
+        public void run(){
+            logger.info("Attempting to connect a user...");
+        }
+    }
+
+
+}
