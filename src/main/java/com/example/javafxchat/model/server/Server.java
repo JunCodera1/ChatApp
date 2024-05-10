@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,13 +24,18 @@ public class Server {
     private static ArrayList<User> users = new ArrayList<>();
     static Logger logger = LoggerFactory.getLogger(Server.class);
 
-    public static void main(String[] args) {
-        logger.info("The chat server is running.");
+    public static void main(String[] args) throws Exception{
+        logger.info("The chat server is running");
         ServerSocket listener = new ServerSocket(PORT);
-        try{
+
+        try {
             while (true){
-                new Handler(listener.accept()).start;
+                new Handler(listener.accept()).start();
             }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            listener.close();
         }
     }
 
@@ -54,7 +60,40 @@ public class Server {
                 output = new ObjectOutputStream(os);
 
                 Message firstMessage = (Message) input.readObject();
+                checkDuplicateUsername(firstMessage);
+                writers.add(output);
+                sendNotification(firstMessage);
+                addToList();
+                while(socket.isConnected()){
+                    Message inputmsg = (Message) input.readObject();
+                    if(inputmsg != null){
+                        logger.info(inputmsg.getType() + " - " + inputmsg.getName() + ": " + inputmsg.getMsg());
+                        switch (inputmsg.getType()){
+                            case USER:
+                                    write(inputmsg);
+                                    break;
 
+                            case VOICE:
+                                    write(inputmsg);
+                                    break;
+
+                            case CONNECTED:
+                                    addToList();
+                                    break;
+
+                            case STATUS:
+                                    changeStatus(inputmsg);
+                                    break;
+
+                        }
+                    }
+                }
+            }catch (SocketException socketException){
+                logger.error("Socket Exception for user " + name);
+            }catch (DuplicateUsernameException duplicateException){
+                logger.error("Duplicate Username : " + name);
+            }catch (Exception e){
+                logger.error("Exception is run() method for user: " + name, e);
             }
         }
         private Message changeStatus(Message inputmsg) throws IOException{
@@ -182,6 +221,4 @@ public class Server {
             logger.debug("closeConnections() method Exit");
         }
     }
-
-
 }
