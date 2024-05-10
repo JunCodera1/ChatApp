@@ -131,6 +131,56 @@ public class Server {
                 writer.reset();
             }
         }
+        /*
+         * Once a user has been disconnected, we close the open connections and remove the writers
+         */
+        private synchronized void closeConnections(){
+            logger.debug("closeConnections() method Enter");
+            logger.info("HashMap names: " + names.size() + " writers:" + writers.size() + " userList size: " + users.size());
+            if(name != null){
+                names.remove(name);
+                logger.info("Users: " + name + " has been removed!");
+            }
+            if(user != null){
+                users.remove(user);
+                logger.info("User object: " + user + " has been removed!");
+            }
+            if(output != null){
+                try{
+                    is.close();
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+            if(is != null){
+                try{
+                    is.close();
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+            if(os != null){
+                try{
+                    os.close();
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+            if(input != null){
+                try{
+                    input.close();
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+            try{
+                removeFromList();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            logger.info("HashMap names: " + names.size() + " writers: " + writers.size() + "usersList size: " + users.size());
+            logger.debug("closeConnections() method Exit");
+        }
     }
 
 
